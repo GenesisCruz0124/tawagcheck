@@ -2,6 +2,8 @@ package com.tawagcheck.app.ui.strings
 
 import com.tawagcheck.app.data.model.CallAction
 import com.tawagcheck.app.data.model.RiskTier
+import com.tawagcheck.app.data.model.ScamCategory
+import com.tawagcheck.app.data.model.ScamMatchType
 
 object EnStrings : Strings {
     override val onboardingTitle = "Protect yourself from scam calls"
@@ -20,11 +22,22 @@ object EnStrings : Strings {
     override val chartTitle = "Flagged calls, last 7 days"
     override val navDashboard = "Dashboard"
     override val navHistory = "History"
+    override val navScamList = "Scam Numbers"
     override val navSettings = "Settings"
 
     override val historyTitle = "Call history"
     override val filterAll = "All"
     override val historyEmpty = "No screened calls yet."
+
+    override val scamListTitle = "Scam Numbers"
+    override val scamListEmpty = "No numbers in the local scam database yet."
+    override val scamListAddTitle = "Add a scam number"
+    override val scamListNumberLabel = "Phone number"
+    override val scamListNumberError = "Enter a valid PH number, e.g. 09171234567"
+    override val scamListTypeLabel = "Match type"
+    override val scamListCategoryLabel = "Category"
+    override val scamListAddButton = "Add"
+    override val scamListCancelButton = "Cancel"
 
     override val settingsTitle = "Settings"
     override val settingsActionsSection = "Actions per risk tier"
@@ -53,5 +66,17 @@ object EnStrings : Strings {
         CallAction.WARN -> "Warn"
         CallAction.SILENCE -> "Silence"
         CallAction.REJECT -> "Reject"
+    }
+
+    override fun scamMatchTypeLabel(type: ScamMatchType): String = when (type) {
+        ScamMatchType.FULL -> "Full number"
+        ScamMatchType.PREFIX -> "Prefix"
+    }
+
+    override fun scamCategoryLabel(category: ScamCategory): String = when (category) {
+        ScamCategory.SMISHING -> "Smishing"
+        ScamCategory.FAKE_BANK -> "Fake bank"
+        ScamCategory.SPOOFED -> "Spoofed"
+        ScamCategory.USER_REPORTED -> "User reported"
     }
 }

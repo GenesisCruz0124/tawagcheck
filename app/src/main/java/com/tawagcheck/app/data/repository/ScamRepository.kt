@@ -27,11 +27,16 @@ class ScamRepository(private val scamNumberDao: ScamNumberDao) {
     }
 
     suspend fun reportUserScam(e164OrRaw: String) {
+        addEntry(e164OrRaw, ScamMatchType.FULL, ScamCategory.USER_REPORTED)
+    }
+
+    /** Manually adds a number/prefix to the local scam list (e.g. from the Scam Numbers screen). */
+    suspend fun addEntry(e164OrRaw: String, type: ScamMatchType, category: ScamCategory) {
         scamNumberDao.insert(
             ScamNumberEntity(
                 number = e164OrRaw,
-                type = ScamMatchType.FULL,
-                category = ScamCategory.USER_REPORTED,
+                type = type,
+                category = category,
                 source = ScamSource.USER_REPORTED,
                 dateAdded = System.currentTimeMillis()
             )
