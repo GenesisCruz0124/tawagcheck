@@ -1,0 +1,8 @@
+{
+  "entries": [
+    { "number": "+63961", "type": "PREFIX", "category": "SMISHING", "source": "seed" },
+    { "number": "+63963", "type": "PREFIX", "category": "SMISHING", "source": "seed" },
+    { "number": "+63999", "type": "PREFIX", "category": "SPOOFED", "source": "seed" },
+    { "number": "+639171234567", "type": "FULL", "category": "FAKE_BANK", "source": "seed" }
+  ]
+}

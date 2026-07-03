@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g. 0.1.0)"
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            TAG="${{ github.event.inputs.version }}"
+          else
+            TAG="${GITHUB_REF_NAME#v}"
+          fi
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$TAG"
+          MAJOR="${MAJOR:-0}"
+          MINOR="${MINOR:-0}"
+          PATCH="${PATCH:-0}"
+          CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
+          echo "name=$TAG" >> "$GITHUB_OUTPUT"
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build release APK
+        run: |
+          ./gradlew assembleRelease \
+            -PversionName="${{ steps.version.outputs.name }}" \
+            -PversionCode="${{ steps.version.outputs.code }}"
+
+      - name: Rename APK
+        run: |
+          mkdir -p out
+          cp app/build/outputs/apk/release/app-release.apk \
+             "out/TawagCheck-v${{ steps.version.outputs.name }}.apk"
+          cp app/src/main/assets/scamlist_seed.json out/scamlist.json
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.name }}
+          files: |
+            out/TawagCheck-v${{ steps.version.outputs.name }}.apk
+            out/scamlist.json
+          generate_release_notes: true
+          body: |
+            **scamlist.json in this release is placeholder/example data only** (a handful of illustrative PH prefixes), not a verified list of real scam numbers. There is no credible public source of specific "known scam number" prefixes for the Philippines to compile — real PH phone scams use spoofed caller IDs and rotating prepaid SIMs rather than a fixed identifiable number range, which is why the app's heuristics engine (not a static list) does most of the actual detection work. Replace this asset with your own curated `scamlist.json` (same schema: `{"entries": [{"number", "type", "category", "source"}]}`) once you have one.
