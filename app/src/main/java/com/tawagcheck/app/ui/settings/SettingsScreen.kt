@@ -211,9 +211,9 @@ private fun ActionPicker(label: String, selected: CallAction, onSelected: (CallA
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .menuAnchor()
+                    .menuAnchor(androidx.compose.material3.ExposedDropdownMenuAnchorType.PrimaryNotEditable, true)
             )
-            androidx.compose.material3.ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 CallAction.entries.forEach { action ->
                     DropdownMenuItem(
                         text = { Text(strings.callActionLabel(action)) },
