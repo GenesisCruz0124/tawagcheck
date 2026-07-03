@@ -46,9 +46,14 @@ jobs:
           mkdir -p out
           cp app/build/outputs/apk/release/app-release.apk \
              "out/TawagCheck-v${{ steps.version.outputs.name }}.apk"
+          cp app/src/main/assets/scamlist_seed.json out/scamlist.json
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: out/TawagCheck-v${{ steps.version.outputs.name }}.apk
+          files: |
+            out/TawagCheck-v${{ steps.version.outputs.name }}.apk
+            out/scamlist.json
           generate_release_notes: true
+          body: |
+            **scamlist.json in this release is placeholder/example data only** (a handful of illustrative PH prefixes), not a verified list of real scam numbers. There is no credible public source of specific "known scam number" prefixes for the Philippines to compile — real PH phone scams use spoofed caller IDs and rotating prepaid SIMs rather than a fixed identifiable number range, which is why the app's heuristics engine (not a static list) does most of the actual detection work. Replace this asset with your own curated `scamlist.json` (same schema: `{"entries": [{"number", "type", "category", "source"}]}`) once you have one.
