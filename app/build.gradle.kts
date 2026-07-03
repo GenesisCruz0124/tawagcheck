@@ -25,14 +25,25 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            // Fixed, checked-in signing key so every build (local or CI) produces an
+            // installable upgrade path instead of AGP's per-machine debug keystore, which
+            // would give every build a different signature and break installs/updates.
+            // Not a Play Store production key - fine for a sideloaded Phase-1 app.
+            storeFile = file("${rootDir}/keystore/tawagcheck-release.jks")
+            storePassword = "tawagcheck-sideload"
+            keyAlias = "tawagcheck"
+            keyPassword = "tawagcheck-sideload"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            // No release keystore configured yet (Phase 1, sideloaded app, not on Play Store).
-            // Debug-signing keeps CI unblocked; swap in a real keystore before any store distribution.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".debug"
