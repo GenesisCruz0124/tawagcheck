@@ -2,6 +2,8 @@ package com.tawagcheck.app.ui.strings
 
 import com.tawagcheck.app.data.model.CallAction
 import com.tawagcheck.app.data.model.RiskTier
+import com.tawagcheck.app.data.model.ScamCategory
+import com.tawagcheck.app.data.model.ScamMatchType
 
 object TaglishStrings : Strings {
     override val onboardingTitle = "Iwas scam calls, protektahan ka namin"
@@ -20,11 +22,22 @@ object TaglishStrings : Strings {
     override val chartTitle = "Na-flag na tawag, huling 7 araw"
     override val navDashboard = "Dashboard"
     override val navHistory = "History"
+    override val navScamList = "Scam Numbers"
     override val navSettings = "Settings"
 
     override val historyTitle = "Call history"
     override val filterAll = "Lahat"
     override val historyEmpty = "Wala pang na-screen na tawag."
+
+    override val scamListTitle = "Scam Numbers"
+    override val scamListEmpty = "Wala pang number sa local scam database."
+    override val scamListAddTitle = "Magdagdag ng scam number"
+    override val scamListNumberLabel = "Phone number"
+    override val scamListNumberError = "Maglagay ng valid na PH number, hal. 09171234567"
+    override val scamListTypeLabel = "Match type"
+    override val scamListCategoryLabel = "Kategorya"
+    override val scamListAddButton = "Idagdag"
+    override val scamListCancelButton = "Kanselahin"
 
     override val settingsTitle = "Settings"
     override val settingsActionsSection = "Aksyon per risk tier"
@@ -53,5 +66,17 @@ object TaglishStrings : Strings {
         CallAction.WARN -> "Balaan"
         CallAction.SILENCE -> "Patahimikin"
         CallAction.REJECT -> "Tanggihan"
+    }
+
+    override fun scamMatchTypeLabel(type: ScamMatchType): String = when (type) {
+        ScamMatchType.FULL -> "Buong number"
+        ScamMatchType.PREFIX -> "Prefix"
+    }
+
+    override fun scamCategoryLabel(category: ScamCategory): String = when (category) {
+        ScamCategory.SMISHING -> "Smishing"
+        ScamCategory.FAKE_BANK -> "Fake bank"
+        ScamCategory.SPOOFED -> "Spoofed"
+        ScamCategory.USER_REPORTED -> "User reported"
     }
 }
