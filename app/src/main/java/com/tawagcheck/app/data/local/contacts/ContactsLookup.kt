@@ -31,4 +31,29 @@ class ContactsLookup(private val context: Context) {
             null
         )?.use { cursor -> cursor.count > 0 } ?: false
     }
+
+    /** Returns the saved contact's display name for this number, or null if unknown/no permission. */
+    fun lookupContactName(e164Number: String): String? {
+        if (!hasPermission()) return null
+
+        val uri = "content://com.android.contacts/phone_lookup".toUri()
+            .buildUpon()
+            .appendPath(e164Number)
+            .build()
+
+        return context.contentResolver.query(
+            uri,
+            arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME),
+            null,
+            null,
+            null
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val nameIndex = cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME)
+                if (nameIndex >= 0) cursor.getString(nameIndex) else null
+            } else {
+                null
+            }
+        }
+    }
 }

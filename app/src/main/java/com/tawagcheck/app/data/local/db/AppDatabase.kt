@@ -10,7 +10,7 @@ import com.tawagcheck.app.data.local.db.entity.ScamNumberEntity
 
 @Database(
     entities = [ScamNumberEntity::class, CallHistoryEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
