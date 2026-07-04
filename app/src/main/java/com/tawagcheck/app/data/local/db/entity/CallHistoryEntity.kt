@@ -17,5 +17,7 @@ data class CallHistoryEntity(
     val tier: RiskTier,
     /** Human-readable reasons the heuristics engine flagged this call, joined with "|". */
     val reasons: String,
-    val action: CallAction
+    val action: CallAction,
+    /** Display name from the user's own phone contacts, if the number matched one. */
+    val contactName: String? = null
 )

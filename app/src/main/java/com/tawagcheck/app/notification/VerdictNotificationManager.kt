@@ -33,7 +33,8 @@ class VerdictNotificationManager(private val context: Context) {
         if (verdict.tier == RiskTier.SAFE) return
         if (!hasNotificationPermission()) return
 
-        val label = verdict.normalizedNumber ?: verdict.rawNumber.ifBlank { "Unknown number" }
+        val number = verdict.normalizedNumber ?: verdict.rawNumber.ifBlank { "Unknown number" }
+        val label = verdict.contactName?.let { "$it ($number)" } ?: number
         val title = when (verdict.tier) {
             RiskTier.LIKELY_SCAM -> "Likely scam call: $label"
             RiskTier.SUSPICIOUS -> "Suspicious call: $label"

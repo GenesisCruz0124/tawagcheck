@@ -84,10 +84,16 @@ private fun CallHistoryRow(call: CallHistoryEntity) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = call.normalizedNumber ?: call.rawNumber.ifBlank { "Hidden number" },
+                    text = call.contactName ?: call.normalizedNumber ?: call.rawNumber.ifBlank { "Hidden number" },
                     style = MaterialTheme.typography.titleMedium
                 )
                 RiskBadge(tier = call.tier)
+            }
+            if (call.contactName != null) {
+                Text(
+                    text = call.normalizedNumber ?: call.rawNumber,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
             Text(
                 text = "${dateFormat.format(Date(call.timestamp))} • ${strings.callActionLabel(call.action)}",

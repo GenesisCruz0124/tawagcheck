@@ -36,7 +36,8 @@ class CallHistoryRepository(private val callHistoryDao: CallHistoryDao) {
                 score = verdict.score,
                 tier = verdict.tier,
                 reasons = verdict.reasons.joinToString("|"),
-                action = verdict.action
+                action = verdict.action,
+                contactName = verdict.contactName
             )
         )
 

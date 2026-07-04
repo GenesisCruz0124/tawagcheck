@@ -8,5 +8,7 @@ data class CallVerdict(
     val score: Int,
     val tier: RiskTier,
     val reasons: List<String>,
-    val action: CallAction
+    val action: CallAction,
+    /** Display name from the user's own phone contacts, if the number matches one. Local-only lookup. */
+    val contactName: String? = null
 )

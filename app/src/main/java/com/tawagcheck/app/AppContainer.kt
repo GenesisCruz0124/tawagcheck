@@ -19,7 +19,11 @@ class AppContainer(context: Context) {
     private val appContext = context.applicationContext
 
     val database: AppDatabase by lazy {
-        Room.databaseBuilder(appContext, AppDatabase::class.java, AppDatabase.DATABASE_NAME).build()
+        Room.databaseBuilder(appContext, AppDatabase::class.java, AppDatabase.DATABASE_NAME)
+            // Phase 1, no real user data at stake yet - destructive fallback instead of hand-writing
+            // migrations for every schema tweak. Revisit before this app has data worth preserving.
+            .fallbackToDestructiveMigration(dropAllTables = true)
+            .build()
     }
 
     val settingsDataStore: SettingsDataStore by lazy { SettingsDataStore(appContext) }

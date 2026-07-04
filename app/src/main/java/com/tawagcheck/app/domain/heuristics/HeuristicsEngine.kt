@@ -39,6 +39,11 @@ class HeuristicsEngine(
         val reasons = mutableListOf<String>()
         var score = 0
 
+        // Local-only: name of a matching entry in the user's own phone contacts, if any.
+        // Independent of the "use contacts for detection" setting below - that one gates a
+        // scoring heuristic, this is just display info and needs nothing beyond the permission.
+        val contactName = normalized?.let { contactsLookup.lookupContactName(it.e164) }
+
         when (val match = scamRepository.match(lookupKey)) {
             is ScamMatch.Full -> {
                 score += FULL_MATCH_SCORE
@@ -81,7 +86,8 @@ class HeuristicsEngine(
             score = score,
             tier = tier,
             reasons = reasons,
-            action = action
+            action = action,
+            contactName = contactName
         )
     }
 
